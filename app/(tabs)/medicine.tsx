@@ -10,6 +10,7 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
+import newStyles from '@/app/uiStyles';
 
 type Medicine = MedicineType;
 
@@ -84,54 +85,54 @@ export default function MedicineScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={newStyles.container}>
       <ScrollView style={styles.scrollView}>
-        <View style={styles.formContainer}>
-          <Text style={styles.formTitle}>Log Medicine</Text>
+        <View style={newStyles.card}>
+          <Text style={newStyles.title}>Log Medicine</Text>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Medicine Name</Text>
+          <View style={newStyles.inputGroup}>
+            <Text style={newStyles.label}>Medicine Name</Text>
             <TextInput
-              style={styles.input}
+              style={newStyles.input}
               placeholder="e.g., Aspirin"
               value={name}
               onChangeText={setName}
-              placeholderTextColor="#ADB5BD"
+              placeholderTextColor="#9CA3AF"
             />
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Dosage</Text>
+          <View style={newStyles.inputGroup}>
+            <Text style={newStyles.label}>Dosage</Text>
             <TextInput
-              style={styles.input}
+              style={newStyles.input}
               placeholder="e.g., 500mg"
               value={dosage}
               onChangeText={setDosage}
-              placeholderTextColor="#ADB5BD"
+              placeholderTextColor="#9CA3AF"
             />
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Time Taken</Text>
+          <View style={newStyles.inputGroup}>
+            <Text style={newStyles.label}>Time Taken</Text>
             <View style={styles.timeInputContainer}>
               <TextInput
-                style={[styles.input, styles.timeInput]}
+                style={[newStyles.input, styles.timeInput]}
                 placeholder="HH:MM (24h)"
                 value={time}
                 onChangeText={setTime}
-                placeholderTextColor="#ADB5BD"
+                placeholderTextColor="#9CA3AF"
               />
               <TouchableOpacity
-                style={styles.nowButton}
+                style={{ ...newStyles.button, paddingHorizontal: 20 }}
                 onPress={() => setTime(getCurrentTime())}
               >
-                <Text style={styles.nowButtonText}>Now</Text>
+                <Text style={newStyles.buttonText}>Now</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Log Medicine</Text>
+          <TouchableOpacity style={newStyles.button} onPress={handleSubmit}>
+            <Text style={newStyles.buttonText}>Log Medicine</Text>
           </TouchableOpacity>
         </View>
 

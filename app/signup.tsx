@@ -1,5 +1,6 @@
 import React, { JSX, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import newStyles from '@/app/uiStyles';
 import { useRouter } from 'expo-router';
 import useAuth from '@/hooks/useAuth';
 import { useEffect } from 'react';
@@ -43,57 +44,43 @@ export default function SignupScreen(): JSX.Element {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
+    <View style={newStyles.container}>
+      <View style={newStyles.card}>
         {user ? (
           <View style={{ marginBottom: 10 }}>
-            <Text style={{ color: '#6C757D' }}>Already signed in</Text>
+            <Text style={newStyles.alreadySignedInText}>Already signed in</Text>
           </View>
         ) : null}
-        <Text style={styles.title}>Create Account</Text>
-        <Text style={styles.subtitle}>Sign up to get started</Text>
+        <Text style={newStyles.title}>Create Account</Text>
+        <Text style={newStyles.subtitle}>Sign up to get started</Text>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="you@example.com" keyboardType="email-address" autoCapitalize="none" placeholderTextColor="#ADB5BD" />
+        <View style={newStyles.inputGroup}>
+          <Text style={newStyles.label}>Email</Text>
+          <TextInput value={email} onChangeText={setEmail} style={newStyles.input} placeholder="you@example.com" keyboardType="email-address" autoCapitalize="none" placeholderTextColor="#9CA3AF" />
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Password</Text>
-          <TextInput value={password} onChangeText={setPassword} secureTextEntry style={styles.input} placeholder="At least 6 characters" placeholderTextColor="#ADB5BD" />
+        <View style={newStyles.inputGroup}>
+          <Text style={newStyles.label}>Password</Text>
+          <TextInput value={password} onChangeText={setPassword} secureTextEntry style={newStyles.input} placeholder="At least 6 characters" placeholderTextColor="#9CA3AF" />
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Confirm Password</Text>
-          <TextInput value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry style={styles.input} placeholder="Confirm your password" placeholderTextColor="#ADB5BD" />
+        <View style={newStyles.inputGroup}>
+          <Text style={newStyles.label}>Confirm Password</Text>
+          <TextInput value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry style={newStyles.input} placeholder="Confirm your password" placeholderTextColor="#9CA3AF" />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={onSignup} disabled={isLoading}>
-          <Text style={styles.buttonText}>{isLoading ? 'Creating...' : 'Create account'}</Text>
+        <TouchableOpacity style={newStyles.button} onPress={onSignup} disabled={isLoading}>
+          <Text style={newStyles.buttonText}>{isLoading ? 'Creating...' : 'Create account'}</Text>
         </TouchableOpacity>
 
-        <View style={styles.row}>
-          <Text style={styles.smallText}>Already have an account?</Text>
+        <View style={newStyles.row}>
+          <Text style={newStyles.smallText}>Already have an account?</Text>
           <TouchableOpacity onPress={() => router.push('/login')}>
-            <Text style={[styles.smallText, styles.link]}> Sign in</Text>
+            <Text style={[newStyles.smallText, newStyles.link]}> Sign in</Text>
           </TouchableOpacity>
         </View>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F9FA', justifyContent: 'center', padding: 16 },
-  card: { backgroundColor: '#FFF', borderRadius: 12, padding: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 2 },
-  title: { fontSize: 22, fontWeight: '700', color: '#1A1A1A' },
-  subtitle: { marginTop: 4, color: '#6C757D' },
-  inputGroup: { marginTop: 12 },
-  label: { color: '#1A1A1A', fontSize: 14, marginBottom: 6 },
-  input: { backgroundColor: '#F8F9FA', borderRadius: 12, padding: 12, fontSize: 16 },
-  button: { marginTop: 18, backgroundColor: '#007AFF', paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
-  buttonText: { color: '#FFF', fontWeight: '600' },
-  row: { flexDirection: 'row', marginTop: 12, justifyContent: 'center', alignItems: 'center' },
-  smallText: { color: '#6C757D' },
-  link: { color: '#007AFF', fontWeight: '700' },
-});
+// Styles were moved to shared '@/app/uiStyles'

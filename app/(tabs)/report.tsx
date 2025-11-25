@@ -6,6 +6,7 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
+import newStyles from '@/app/uiStyles';
 import { useFocusEffect } from 'expo-router';
 import { storageUtils } from '@/utils/storage';
 import { Activity, Pill, TrendingUp, Calendar } from 'lucide-react-native';
@@ -49,7 +50,7 @@ export default function ReportScreen() {
 
   return (
     <ScrollView
-      style={styles.container}
+      style={{ ...styles.container, backgroundColor: newStyles.container.backgroundColor }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={() => {}} />
       }>

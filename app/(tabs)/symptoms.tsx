@@ -9,6 +9,7 @@ import {
   Alert,
   Modal,
 } from 'react-native';
+import newStyles from '@/app/uiStyles';
 import { ChevronDown } from 'lucide-react-native';
 import { useFocusEffect } from 'expo-router';
 import { storageUtils, Symptom as SymptomType } from '@/utils/storage';
@@ -74,27 +75,27 @@ export default function SymptomsScreen(): JSX.Element {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={newStyles.container}>
       <ScrollView style={styles.scrollView}>
         {/* FORM */}
-        <View style={styles.formContainer}>
-          <Text style={styles.formTitle}>Log New Symptom</Text>
+        <View style={newStyles.card}>
+          <Text style={newStyles.title}>Log New Symptom</Text>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Symptom Name</Text>
+          <View style={newStyles.inputGroup}>
+            <Text style={newStyles.label}>Symptom Name</Text>
             <TextInput
-              style={styles.input}
+              style={newStyles.input}
               placeholder="e.g., Headache"
               value={name}
               onChangeText={setName}
-              placeholderTextColor="#ADB5BD"
+              placeholderTextColor="#9CA3AF"
             />
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Severity</Text>
+          <View style={newStyles.inputGroup}>
+            <Text style={newStyles.label}>Severity</Text>
             <TouchableOpacity
-              style={styles.pickerButton}
+              style={{ ...newStyles.input, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
               onPress={() => setShowSeverityPicker(true)}
             >
               <Text style={styles.pickerButtonText}>{severity}</Text>
@@ -102,21 +103,21 @@ export default function SymptomsScreen(): JSX.Element {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Description (Optional)</Text>
+          <View style={newStyles.inputGroup}>
+            <Text style={newStyles.label}>Description (Optional)</Text>
             <TextInput
-              style={[styles.input, styles.textArea]}
+              style={[newStyles.input, { height: 100 }]}
               placeholder="Optional details"
               value={description}
               onChangeText={setDescription}
               multiline
               numberOfLines={4}
-              placeholderTextColor="#ADB5BD"
+              placeholderTextColor="#9CA3AF"
             />
           </View>
 
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Log Symptom</Text>
+          <TouchableOpacity style={newStyles.button} onPress={handleSubmit}>
+            <Text style={newStyles.buttonText}>Log Symptom</Text>
           </TouchableOpacity>
         </View>
 

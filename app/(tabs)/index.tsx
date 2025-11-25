@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -7,45 +7,53 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
-import { useFocusEffect, useRouter } from 'expo-router';
+import newStyles from '@/app/uiStyles';
+import { useRouter } from 'expo-router';
 import { Plus, Activity, Pill } from 'lucide-react-native';
-import { storageUtils, Symptom, Medicine } from '@/utils/storage';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const [todaySymptoms, setTodaySymptoms] = useState<Symptom[]>([]);
-  const [todayMedicines, setTodayMedicines] = useState<Medicine[]>([]);
+
+  // Dummy static frontend-only data
+  const [todaySymptoms, setTodaySymptoms] = useState([
+    {
+      id: '1',
+      name: 'Headache',
+      severity: 'Mild',
+      description: 'Light throbbing',
+      date: new Date(),
+    },
+    {
+      id: '2',
+      name: 'Fever',
+      severity: 'Severe',
+      description: 'Body hot and tired',
+      date: new Date(),
+    },
+  ]);
+
+  const [todayMedicines, setTodayMedicines] = useState([
+    {
+      id: '1',
+      name: 'Paracetamol',
+      dosage: '500mg',
+      time: '14:30',
+      date: new Date(),
+    },
+  ]);
+
   const [refreshing, setRefreshing] = useState(false);
 
-  const loadData = async (): Promise<void> => {
-    try {
-      const symptoms = await storageUtils.getSymptoms();
-      const medicines = await storageUtils.getMedicines();
-      setTodaySymptoms(storageUtils.getTodayItems(symptoms));
-      setTodayMedicines(storageUtils.getTodayItems(medicines));
-    } catch (error) {
-      console.error('Failed to load data:', error);
-    }
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      loadData();
-    }, [])
-  );
-
-  const onRefresh = async (): Promise<void> => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    try {
-      await loadData();
-    } catch (error) {
-      console.error('Failed to refresh data:', error);
-    } finally {
+
+    // Simulate refresh
+    setTimeout(() => {
       setRefreshing(false);
-    }
+    }, 800);
   };
 
-  const getSeverityStyle = (sev: Symptom['severity']) => {
+  const getSeverityStyle = (sev: string) => {
     switch (sev) {
       case 'Mild':
         return styles.severityMild;
@@ -60,7 +68,7 @@ export default function HomeScreen() {
 
   return (
     <ScrollView
-      style={styles.container}
+      style={{ ...styles.container, backgroundColor: newStyles.container.backgroundColor }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
@@ -86,7 +94,7 @@ export default function HomeScreen() {
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Today's Symptoms</Text>
           <TouchableOpacity
-            style={styles.addButton}
+            style={{ ...styles.addButton, backgroundColor: newStyles.button.backgroundColor || '#4C6EF5' }}
             onPress={() => router.push('/symptoms')}>
             <Plus size={20} color="#FFFFFF" />
             <Text style={styles.addButtonText}>Add</Text>
@@ -98,11 +106,15 @@ export default function HomeScreen() {
             <Text style={styles.emptyText}>No symptoms logged today</Text>
           </View>
         ) : (
-          todaySymptoms.map((symptom: Symptom) => (
+          todaySymptoms.map((symptom) => (
             <View key={symptom.id} style={styles.itemCard}>
               <View style={styles.itemHeader}>
                 <Text style={styles.itemName}>{symptom.name}</Text>
-                <View style={[styles.severityBadge, getSeverityStyle(symptom.severity)]}>
+                <View
+                  style={[
+                    styles.severityBadge,
+                    getSeverityStyle(symptom.severity),
+                  ]}>
                   <Text style={styles.severityText}>{symptom.severity}</Text>
                 </View>
               </View>
@@ -135,7 +147,7 @@ export default function HomeScreen() {
             <Text style={styles.emptyText}>No medicines logged today</Text>
           </View>
         ) : (
-          todayMedicines.map((medicine: Medicine) => (
+          todayMedicines.map((medicine) => (
             <View key={medicine.id} style={styles.itemCard}>
               <Text style={styles.itemName}>{medicine.name}</Text>
               <Text style={styles.medicineDetails}>
@@ -153,10 +165,8 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8F9FA',
-  },
+  container: { flex: 1, backgroundColor: '#F8F9FA' },
+
   header: {
     backgroundColor: '#007AFF',
     padding: 20,
@@ -168,10 +178,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 4,
   },
-  date: {
-    fontSize: 16,
-    color: '#E8F4FF',
-  },
+  date: { fontSize: 16, color: '#E8F4FF' },
+
   summaryContainer: {
     flexDirection: 'row',
     padding: 16,
@@ -201,21 +209,16 @@ const styles = StyleSheet.create({
     marginTop: 4,
     textAlign: 'center',
   },
-  section: {
-    padding: 16,
-    paddingTop: 8,
-  },
+
+  section: { padding: 16, paddingTop: 8 },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
   },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#1A1A1A',
-  },
+  sectionTitle: { fontSize: 20, fontWeight: '600', color: '#1A1A1A' },
+
   addButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -230,16 +233,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
+
   emptyState: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 32,
     alignItems: 'center',
   },
-  emptyText: {
-    fontSize: 16,
-    color: '#8E8E93',
-  },
+  emptyText: { fontSize: 16, color: '#8E8E93' },
+
   itemCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
@@ -257,39 +259,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-  itemName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1A1A1A',
-    flex: 1,
-  },
+  itemName: { fontSize: 18, fontWeight: '600', color: '#1A1A1A' },
+
   severityBadge: {
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
   },
-  severityMild: {
-    backgroundColor: '#D4EDDA',
-  },
-  severityModerate: {
-    backgroundColor: '#FFF3CD',
-  },
-  severitySevere: {
-    backgroundColor: '#F8D7DA',
-  },
-  severityText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
+  severityMild: { backgroundColor: '#D4EDDA' },
+  severityModerate: { backgroundColor: '#FFF3CD' },
+  severitySevere: { backgroundColor: '#F8D7DA' },
+
+  severityText: { fontSize: 12, fontWeight: '600' },
+
   itemDescription: {
     fontSize: 14,
     color: '#6C757D',
     marginBottom: 8,
   },
-  itemTime: {
-    fontSize: 12,
-    color: '#ADB5BD',
-  },
+  itemTime: { fontSize: 12, color: '#ADB5BD' },
+
   medicineDetails: {
     fontSize: 14,
     color: '#6C757D',
